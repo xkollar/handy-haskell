@@ -1,0 +1,29 @@
+Name:                svg-graphic-teach
+Version:             0.3
+Synopsis:            Jednoducha prace s grafikou
+Description:         Knihovna na praci s jednoduchou grafikou s moznosti zapisu SVG souboru.
+Category:            Graphics
+License:             BSD3
+License-file:        LICENSE
+Author:              Matej Kollar <xkollar2@fi.muni.cz>
+Maintainer:          xkollar2@fi.muni.cz
+Bug-reports:         xkollar2@fi.muni.cz
+Build-depends:       base
+Build-type:          Simple
+Cabal-version:       >= 1.2
+
+Data-files:          data/example.svg
+                   , data/example.xhtml
+                   , data/example2.svg
+                   , examples/frac-tree.hs
+                   , examples/pavuciny.hs
+                   , examples/sierp.hs
+
+Library
+  Hs-source-dirs:    src
+  Build-depends:     base >= 3 && < 5
+  Exposed-modules:   SimpleGraphics
+  Other-modules:     SimpleGraphics.Types
+                   , SimpleGraphics.Svg
+  GHC-options:       -Wall
+
