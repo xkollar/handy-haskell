@@ -1,7 +1,7 @@
 import Prelude hiding ( gcd )
 
 gcd :: Integral a => a -> a -> a
-gcd a 0 = a
+gcd a 0 = abs a
 gcd a b = gcd b (a `mod` b)
 
 diagonal :: [(Integer, Integer)]
