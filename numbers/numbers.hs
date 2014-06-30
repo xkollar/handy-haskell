@@ -45,3 +45,34 @@ primes = 2:3: filter isPrime [5,7..] where
 
 fibs :: [Integer]
 fibs = 0 : 1 : zipWith (+) fibs (tail fibs)
+
+-----------------
+
+-- | Encode natural number in base `(length s)`.
+--
+-- > encode ['0'..'9'] 100
+-- "100"
+--
+-- > encode "01" 5
+-- "101"
+--
+-- It is not a bijection due to "leading zeros problem".
+encodeBase :: Integral a => [b] -> a -> [b]
+encodeBase s = reverse . f where
+    l = fromIntegral $ length s
+    f 0 = []
+    f n = s !! fromIntegral m : f d where
+        (d,m) = divMod n l
+
+-- | Bijectively encode number into sequence.
+-- This is not standard math encoding, but is handy
+-- when you need to use space as efficiently as you can.
+--
+-- Handy for generating examples: map (encode "aA") [1..]
+encodeBij :: Integral a => [b] -> a -> [b]
+encodeBij s = reverse . f where
+    l = fromIntegral $ length s
+    f 0 = []
+    f n = s !! fromIntegral m : f d where
+        (d,m) = divMod (n - 1) l
+
