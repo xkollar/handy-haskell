@@ -4,6 +4,8 @@ import "hint" HLint.Dollar
 
 import Data.Map
 import Control.Arrow
+import Control.Monad
+import Control.Monad.State
 
 warn = (\ x -> f $ g x) ==> f . g
 
@@ -46,3 +48,7 @@ warn = (a *** b) (Control.Arrow.second f x) ==> (a Control.Arrow.*** (b . f)) x
 warn = Control.Arrow.first f ((a &&& b) x) ==> ((f . a) Control.Arrow.&&& b) x
 warn = Control.Arrow.second f ((a &&& b) x) ==> (a Control.Arrow.&&& (f . b)) x
 
+-- State
+
+warn = fmap f Control.Monad.State.get ==> Control.Monad.State.gets f
+warn = Control.Monad.liftM f Control.Monad.State.get ==> Control.Monad.State.gets f
