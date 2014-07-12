@@ -12,6 +12,12 @@ warn = (\ x -> f $ g x) ==> f . g
 -- List
 warn = cycle [c] ==> repeat c
 
+warn = x == [] ==> null x where note = "generalize"
+warn = [] == x ==> null x where note = "generalize"
+
+warn = x /= [] ==> not (null x) where note = "generalize"
+warn = [] /= x ==> not (null x) where note = "generalize"
+
 warn = fst (unzip x) ==> map fst x
 warn = snd (unzip x) ==> map snd x
 
