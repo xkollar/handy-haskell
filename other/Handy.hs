@@ -13,6 +13,14 @@ increasingBy c = g where
     g (x:s) = x : g (dropWhile (not . c x) s)
     g s = s
 
+-- | Test whether element is in ordered list. Works with infinite lists.
+ordElem :: Ord a => a -> [a] -> Bool
+ordElem x (y:s)
+    | x > y = ordElem x s
+    | x < y = False
+    | otherwise = True
+ordElem _ [] = False
+
 anotater :: (a -> b) -> a -> (a, b)
 anotater = (id &&&)
 
