@@ -1,0 +1,56 @@
+
+Variables for edges.
+
+  edge e_{i,x,y) have x at "bottom" and "y" at top,
+  classical indexing as in array:
+
+    e{i,_,_} have parrent e{i`div`2,_,_}
+
+           1
+        ,-' '-,
+       2       3
+      / \     / \
+     4   5   6   7
+    ...
+
+level = 6
+
+vertCnt = 2^n-1
+edgeCnt = 2^n-2
+
+variables: [ e_{p,x,y} | i <- [1..edgeCnt], x <- [1..vertCnt], y <- [1..vertCnt] ]
+
+o every edge is realised (at least once)
+
+  forAll p . exists i . exists j . e_{p,i,j}
+
+o every edge is realised at most once
+
+  forAll p . forAll x . forAll y . forAll w . forAll z . (x/=w /\ y/=z) => (- e_{p,x,y} \/ - e_{p,w,z})
+
+o every value (except 1) is in "source" of some edge
+
+  forall i [2..vertCnt] . exists p . exists a . e_{p,i,a}
+
+o every value (except 1) is in source of at most one edge
+
+  forall i [2..vertCnt] . forall p . forall a . forall q . forall b . (p /= q /\ a /= b) => (- e_{p,i,a} \/ - e_{q,i,b})
+
+every length is realised
+
+  -- forall d . (exists a [1..vertCnt-d] . exists i . e_{i,a,a+d} ) \/ (exists a [1+d..vertCnt] . exists i . e_{i,a,a-d} )
+  forall d . (exists a [1..vertCnt-d] . exists i . e_{i,a,a+d} ) \/ (exists a [1+d..vertCnt] . exists i . e_{i,a,a-d} )
+
+   [1..vertCnt-d] -> e_{i,a,a+d}
+   [1+d..vertCnt] -> e_{i,a,a-d}
+
+   [1+d..vertCnt] -> e_{i,a,a-d}, e_{i,a+d,a}
+
+
+-- every length is realised at most once
+-- 
+--   --
+
+o tree is consistent
+
+   forall p [4..edgeCnt] . forall x . forall y . forall w . forall z . (x /= y) => (- e_{p,w,x} \/ - e_{p`div`2,y,z})
