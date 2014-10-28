@@ -6,6 +6,7 @@ import Data.List
 import Data.Maybe
 import System.Environment ( getArgs )
 import System.Time ( formatCalendarTime, getClockTime, toUTCTime )
+import System.IO ( hSetBuffering, BufferMode( LineBuffering ), stdout )
 import Text.Printf
 
 
@@ -181,7 +182,9 @@ main' [x] = magic (read x)
 main' _ = putStrLn "Read source (sry)"
 
 main :: IO ()
-main = getArgs >>= main'
+main = do
+    hSetBuffering stdout LineBuffering
+    getArgs >>= main'
 
 -- [((0,2),4),((1,0),4),((3,0),2),((3,2),4)] -> 16 % 17 (94.12)
 -- [((0,2),4),((2,2),7),((1,0),4)] -> 17 % 18 (94.44)
