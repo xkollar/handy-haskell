@@ -1,7 +1,6 @@
 module Handy where
 
 import Control.Arrow
-import Data.List ( groupBy )
 
 fixEq :: Eq a => (a -> a) -> a -> a
 fixEq f = fun where
@@ -10,7 +9,9 @@ fixEq f = fun where
 
 -- | Greedely selects "ordered" subsequence.
 increasingBy :: (a -> a -> Bool) -> [a] -> [a]
-increasingBy c = map head . groupBy ((not .) . c)
+increasingBy c = g where
+    g (x:s) = x : g (dropWhile (not . c x) s)
+    g s = s
 
 -- | Test whether element is in ordered list. Works with infinite lists.
 ordElem :: Ord a => a -> [a] -> Bool
