@@ -5,9 +5,10 @@ module Handy.Number
     , modInv
     -- * Arithmetic
     , sqrtBig
-    -- * Some usefull numerical seqences
-    , primes
+    -- * Often used seqences
+    , diagonal
     , fibs
+    , primes
     ) where
 
 -- -- | Standard GCD
@@ -65,3 +66,9 @@ primes = 2:3: filter isPrime [5,7..] where
 -- | List of Fibonacci numbers.
 fibs :: [Integer]
 fibs = 0 : 1 : zipWith (+) fibs (tail fibs)
+
+-- | Diagonal enumeration of pairs of natural numbers.
+-- Every pair is guaranteed to occur at finite position
+-- in the list. Usable mostly with types representing unbound numbers.
+diagonal :: Integral a => [(a, a)]
+diagonal = [(x,n-x) | n <- [0..], x <- [0..n] ]

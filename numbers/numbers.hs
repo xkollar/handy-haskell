@@ -1,8 +1,5 @@
 import Prelude hiding ( gcd )
 
-diagonal :: [(Integer, Integer)]
-diagonal = [(x,n-x) | n <- [0..], x <- [0..n] ]
-
 sqrtBig :: Integral b => b -> b
 sqrtBig n = head . dropWhile ((n<).(^(2::Int))) $ iterate f n where
     f x = (x + n `div` x) `div` 2
