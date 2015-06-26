@@ -1,9 +1,5 @@
 import Prelude hiding ( gcd )
 
-gcd :: Integral a => a -> a -> a
-gcd a 0 = abs a
-gcd a b = gcd b (a `mod` b)
-
 diagonal :: [(Integer, Integer)]
 diagonal = [(x,n-x) | n <- [0..], x <- [0..n] ]
 
@@ -32,21 +28,6 @@ dec2 n = (x,y) where
     (x, y') = f 0 n where
         f a b = if m == 0 then f (a+1) d else (a,b) where (d, m) = b `divMod` 2
     y = (y' - 1) `div` 2
-
------------------
-
-primes :: [Integer]
-primes = 2:3: filter isPrime [5,7..] where
-    isPrime n = f $ takeWhile (<=bound) primes where
-        f = notElem 0 . map (mod n)
-        bound = sqrtBig n
-
------------------
-
-fibs :: [Integer]
-fibs = 0 : 1 : zipWith (+) fibs (tail fibs)
-
------------------
 
 -- | Encode natural number in base `(length s)`.
 --
