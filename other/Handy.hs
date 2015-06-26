@@ -26,3 +26,22 @@ anotater = (id &&&)
 
 anotatel :: (a -> b) -> a -> (b, a)
 anotatel = (&&& id)
+
+-- Preserves `sorted s ==> sorted (orderedPerms s)`
+orderedPerms :: [a] -> [[a]]
+orderedPerms s = f [] s [] where
+    f :: [a] -> [a] -> [[a]] -> [[a]]
+    f a [] r = reverse a:r
+    f a s r = foldr (\ (x,t) g -> f (x:a) t . g ) id (selections s) r
+
+selections :: [a] -> [(a, [a])]
+selections = f id where
+    f g (x:s) = (x, g s) : f (g.(x:)) s
+    f _ [] = []
+
+sorted :: Ord a => [a] -> Bool
+sorted [] = True
+sorted (x:s) = f x s where
+    f v (y:t) = v < y && f y t
+    f _ [] = True
+
