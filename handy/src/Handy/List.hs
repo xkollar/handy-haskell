@@ -20,9 +20,9 @@ ordElem _ [] = False
 -- | Produces list of permutations.
 -- Preserves 'monotonousBy lt s ==> monotonousBy lt (orderedPermutations s)'.
 orderedPermutations :: [a] -> [[a]]
-orderedPermutations s' = perms [] s' [] where
+orderedPermutations s' = perms [] (reverse s') [] where
     perms :: [a] -> [a] -> [[a]] -> [[a]]
-    perms a [] r = reverse a:r
+    perms a [] r = a:r
     perms a s r = foldr (\ (x,t) g -> perms (x:a) t . g ) id (selections s) r
 
     selections :: [a] -> [(a, [a])]
