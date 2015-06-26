@@ -2,8 +2,13 @@
 module Handy.List where
 
 -- | Greedily selects 'ordered' subsequence. Usefull for printing progress of optimization search,
--- for example 'print . maximum $ possibleSolutions' can be replaced with more entertaining
--- 'mapM_ print . increasingBy (<) $ possibleSolutions'.
+-- for example
+--
+-- > print . maximum $ possibleSolutions
+--
+-- can be replaced with more entertaining
+--
+-- > mapM_ print . increasingBy (<) $ possibleSolutions
 increasingBy :: (a -> a -> Bool) -> [a] -> [a]
 increasingBy c = g where
     g (x:s) = x : g (dropWhile (not . c x) s)
@@ -18,7 +23,9 @@ ordElem x (y:s)
 ordElem _ [] = False
 
 -- | Produces list of permutations.
--- Preserves 'monotonousBy lt s ==> monotonousBy lt (orderedPermutations s)'.
+-- Preserves @monotonousBy lt s ==> monotonousBy lt (orderedPermutations s)@.
+--
+-- prop> sort (permutations s) = orderedPermutations (sort s)
 orderedPermutations :: [a] -> [[a]]
 orderedPermutations s' = perms [] (reverse s') [] where
     perms :: [a] -> [a] -> [[a]] -> [[a]]
@@ -31,7 +38,7 @@ orderedPermutations s' = perms [] (reverse s') [] where
         f _ [] = []
 
 -- | Produces list-encoded subsets.
--- Preserves 'monotonousBy lt s ==> monotonousBy lt (orderedSubsets s)'.
+-- Preserves @monotonousBy lt s ==> monotonousBy lt (orderedSubsets s)@.
 orderedSubsets :: [a] -> [[a]]
 orderedSubsets s' = subs [] s' [] where
     subs :: [a] -> [a] -> [[a]] -> [[a]]
