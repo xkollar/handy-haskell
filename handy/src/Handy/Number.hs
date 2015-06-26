@@ -13,7 +13,7 @@ module Handy.Number
     , enc1, dec1
     , enc2, dec2
     , encodeBase
-    , encodeBij
+    , encodeBij, decodeBij
     ) where
 
 -- -- | Standard GCD
@@ -135,3 +135,15 @@ encodeBij s = reverse . f where
     f n = s !! fromIntegral m : f d where
         (d,m) = divMod (n - 1) l
 
+-- | Decoding for 'encodeBij' encoding.
+--
+-- For natural numbers and non-empty list:
+--
+-- prop> encodeBij s . decodeBij s = id
+--
+-- prop> decodeBij s . encodeBijj s = id
+decodeBij :: (Integral a, Eq b) => [b] -> [b] -> a
+decodeBij s = f . reverse where
+    l = fromIntegral $ length s
+    f = foldr (\ x y -> x + y * l) 0 . map pos where
+        pos = succ . fromIntegral . length . flip takeWhile s . (/=)
