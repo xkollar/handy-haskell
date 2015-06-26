@@ -40,7 +40,6 @@ egcd a b = (i * g,i * s,i * t) where
 --
 -- >>> sqrtBig 121
 -- 11
---
 -- >>> sqrtBig 120
 -- 10
 sqrtBig :: Integral b => b -> b
@@ -57,6 +56,8 @@ sqrtBig n = head . dropWhile ((n<).(^(2::Int))) $ iterate f n where
 --   (-12) `mod` (-13) = (-12)
 --
 -- | Modular inverse.
+--
+-- > (a * i) `mod` m == 1 where Just i = a `modInv` m
 modInv :: Integral a => a -> a -> Maybe a
 modInv a m = if g == 1 then Just (i `mod` m) else Nothing where
     (g, i, _) = egcd a m
@@ -87,7 +88,11 @@ enc1 x y = (x + y)*(x + y + 1) `div` 2 + x
 
 -- | Decoding for 'enc1' encoding.
 --
--- prop> dec1 . uncurry enc1 == id
+-- For natural numbers:
+--
+-- prop> dec1 . uncurry enc1 = id
+--
+-- prop> uncurry enc1 . dec1 = id
 dec1 :: Integral a => a -> (a, a)
 dec1 0 = (0,0) where
 dec1 n = (c, a+d-c) where
@@ -101,6 +106,11 @@ enc2 :: Integral a => a -> a -> a
 enc2 x y = 2^x * (y*2+1)
 
 -- | Decoding for 'enc2' encoding.
+-- For natural numbers:
+--
+-- prop> dec2 . uncurry enc2 = id
+--
+-- prop> uncurry enc2 . dec2 = id
 dec2 :: Integral a => a -> (a, a)
 dec2 n = (x,y) where
     (x, y') = f 0 n where
@@ -108,14 +118,16 @@ dec2 n = (x,y) where
     y = (y' - 1) `div` 2
 
 -- | Encode natural number in base @(length s)@, using symbols from @s@.
+-- Provided @s@ must be of length no less than 2.
 --
--- > encode ['0'..'9'] 100
+-- >>> encode ['0'..'9'] 100
 -- "100"
---
--- > encode "01" 5
+-- >>> encode "01" 5
 -- "101"
+-- >>> encodeBase "0123456789abc" (6*9)
+-- "42"
 --
--- It is not a bijection due to "leading zeros problem".
+-- It is not a bijection due to \"leading zeros problem\".
 encodeBase :: Integral a => [b] -> a -> [b]
 encodeBase s = reverse . f where
     l = fromIntegral $ length s
@@ -123,11 +135,16 @@ encodeBase s = reverse . f where
     f n = s !! fromIntegral m : f d where
         (d,m) = divMod n l
 
--- | Bijectively encode number into sequence.
+-- | Bijectively encode natural numbers into sequence.
 -- This is not standard math encoding, but is handy
 -- when you need to use space as efficiently as you can.
 --
--- Handy for generating examples: map (encode "aA") [1..]
+-- Provided @s@ must be non-empty. For single element list
+-- it collapses to length-encoding.
+--
+-- Handy for generating examples:
+--
+-- > map (encode "aA") [1..]
 encodeBij :: Integral a => [b] -> a -> [b]
 encodeBij s = reverse . f where
     l = fromIntegral $ length s
