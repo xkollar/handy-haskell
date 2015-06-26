@@ -16,7 +16,7 @@ ordElem _ [] = False
 
 -- Preserves `sorted s ==> sorted (orderedPerms s)`
 orderedPerms :: [a] -> [[a]]
-orderedPerms s = f [] s [] where
+orderedPerms s' = f [] s' [] where
     f :: [a] -> [a] -> [[a]] -> [[a]]
     f a [] r = reverse a:r
     f a s r = foldr (\ (x,t) g -> f (x:a) t . g ) id (selections s) r
