@@ -12,17 +12,17 @@ warn = (\ x -> f $ g x) ==> f . g
 -- List
 warn = cycle [c] ==> repeat c
 
-warn = x == [] ==> null x where note = "generalize"
-warn = [] == x ==> null x where note = "generalize"
+warn "Use null" = x == [] ==> null x
+warn "Use null" = [] == x ==> null x
 
-warn = x /= [] ==> not (null x) where note = "generalize"
-warn = [] /= x ==> not (null x) where note = "generalize"
+warn "Use null" = x /= [] ==> not (null x)
+warn "Use null" = [] /= x ==> not (null x)
+
+warn "Use null" = length x > 0 ==> not (null x) where note = "increases laziness"
+warn "Use null" = length x >= 1 ==> not (null x) where note = "increases laziness"
 
 warn = fst (unzip x) ==> map fst x
 warn = snd (unzip x) ==> map snd x
-
-warn "Use not . null" = length x > 0 ==> not (null x) where note = "increases laziness"
-warn "Use not . null" = length x >= 1 ==> not (null x) where note = "increases laziness"
 
 -- Map
 warn = map fst (Data.Map.toList x) ==> Data.Map.keys x
@@ -32,7 +32,6 @@ warn = foldr f v (Data.Map.elems x) ==> Data.Map.foldr f v x
 warn = Data.Maybe.fromMaybe d (Data.Map.lookup k m) ==> Data.Map.findWithDefault d k m
 
 -- Arrows
-
 warn = id *** id ==> id
 warn = Control.Arrow.first id ==> id
 warn = Control.Arrow.second id ==> id
@@ -55,6 +54,5 @@ warn = Control.Arrow.first f ((a &&& b) x) ==> ((f . a) Control.Arrow.&&& b) x
 warn = Control.Arrow.second f ((a &&& b) x) ==> (a Control.Arrow.&&& (f . b)) x
 
 -- State
-
 warn = fmap f Control.Monad.State.get ==> Control.Monad.State.gets f
 warn = Control.Monad.liftM f Control.Monad.State.get ==> Control.Monad.State.gets f
