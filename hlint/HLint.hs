@@ -53,6 +53,9 @@ warn = (a *** b) (Control.Arrow.second f x) ==> (a Control.Arrow.*** (b . f)) x
 warn = Control.Arrow.first f ((a &&& b) x) ==> ((f . a) Control.Arrow.&&& b) x
 warn = Control.Arrow.second f ((a &&& b) x) ==> (a Control.Arrow.&&& (f . b)) x
 
+warn = fst &&& snd ==> id
+warn = snd &&& fst ==> Data.Tuple.swap
+
 -- State
 warn = fmap f Control.Monad.State.get ==> Control.Monad.State.gets f
 warn = Control.Monad.liftM f Control.Monad.State.get ==> Control.Monad.State.gets f
