@@ -32,9 +32,9 @@ warn = foldr f v (Data.Map.elems x) ==> Data.Map.foldr f v x
 warn = Data.Maybe.fromMaybe d (Data.Map.lookup k m) ==> Data.Map.findWithDefault d k m
 
 -- Arrows
-warn = id *** id ==> id
-warn = Control.Arrow.first id ==> id
-warn = Control.Arrow.second id ==> id
+warn = id *** id ==> id where note = "generalize"
+warn = Control.Arrow.first id ==> id where note = "generalize"
+warn = Control.Arrow.second id ==> id where note = "generalize"
 
 warn = Control.Arrow.first f (Control.Arrow.second g x) ==> (f Control.Arrow.*** g) x
 warn = Control.Arrow.second f (Control.Arrow.first g x) ==> (g Control.Arrow.*** f) x
@@ -53,7 +53,7 @@ warn = (a *** b) (Control.Arrow.second f x) ==> (a Control.Arrow.*** (b . f)) x
 warn = Control.Arrow.first f ((a &&& b) x) ==> ((f . a) Control.Arrow.&&& b) x
 warn = Control.Arrow.second f ((a &&& b) x) ==> (a Control.Arrow.&&& (f . b)) x
 
-warn = fst &&& snd ==> id
+warn = fst &&& snd ==> id where note = "generalize"
 warn = snd &&& fst ==> Data.Tuple.swap
 
 -- State
