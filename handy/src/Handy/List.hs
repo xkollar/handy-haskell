@@ -25,6 +25,11 @@ ordElem _ [] = False
 -- | Produces list of permutations.
 -- Preserves @monotonousBy lt s ==> monotonousBy lt (orderedPermutations s)@.
 --
+-- This function is slower than 'Data.List.permutations', however if you
+-- need permurations to be sorted this is more suitable choice as
+-- @sort (permutations s)@ not only runs longer than @orderedPermutations (sort s)@
+-- but the latter one is lazy and more memorry efficient.
+--
 -- prop> sort (permutations s) = orderedPermutations (sort s)
 orderedPermutations :: [a] -> [[a]]
 orderedPermutations s' = perms [] (reverse s') [] where
