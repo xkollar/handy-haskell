@@ -8,8 +8,8 @@ It can be viewed as kind of a kindergarten for my Haskell code.
 Needless to say, some of it already grew beyond that and should be carved
 out.
 
-Handy
------
+[Handy](handy)
+--------------
 
 Code that was originally supposed to be in this repository. I try to
 comment it using Haddock. There are some general-purpose functions that
@@ -17,22 +17,22 @@ I found myself coding times and again when solving puzzles like those on
 [IBM Ponder This](https://www.research.ibm.com/haifa/ponderthis/index.shtml),
 [Jane Street Puzzles](https://www.janestreet.com/puzzles/), or [Project Euler](https://projecteuler.net/).
 
-HLint
------
+[HLint](hlint)
+--------------
 
 My configuration of [HLint](https://github.com/ndmitchell/hlint) and its integration with GHCi.
 
-Irc
----
+[Irc](irc)
+----------
 
 Little something to monitor IRC channels without the risk of posting something accidentally.
 
-Other
------
+[Other](other)
+--------------
 
 Actual code used to solve some of mentioned puzzles.
 
-Svg-graphic-teach
------------------
+[Svg-graphic-teach](svg-graphic-teach)
+--------------------------------------
 
 Toy graphic library with [its own documentation](svg-graphic-teach).
