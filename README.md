@@ -11,9 +11,10 @@ out.
 [Handy](handy)
 --------------
 
-Code that was originally supposed to be in this repository. I try to
-comment it using Haddock. There are some general-purpose functions that
-I found myself coding times and again when solving puzzles like those on
+Code that was originally supposed to be in this repository. It is documented using
+Haddock ([pre-generated documentation](http://xkollar.github.io/handy-haskell/handy/)).
+There are some general-purpose functions that I found myself coding times
+and again when solving puzzles like those on
 [IBM Ponder This](https://www.research.ibm.com/haifa/ponderthis/index.shtml),
 [Jane Street Puzzles](https://www.janestreet.com/puzzles/), or [Project Euler](https://projecteuler.net/).
 
