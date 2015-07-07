@@ -21,7 +21,10 @@ and again when solving puzzles like those on
 [HLint](hlint)
 --------------
 
-My configuration of [HLint](https://github.com/ndmitchell/hlint) and its integration with GHCi.
+My configuration of [HLint](https://github.com/ndmitchell/hlint) and example integration with GHCi.
+If you do not have your own `~/.ghc/ghci.conf` then simply put those files
+into `~/.ghc/` directory to get `:hlint` available from GHCi. (It will get you
+nicely colored hints for your code (if any `;-)`).
 
 [Irc](irc)
 ----------
