@@ -1,12 +1,12 @@
 module Handy.Function
     ( fixEq
-    , anotatel
-    , anotater
+    , annotatel
+    , annotater
     ) where
 
 import Control.Arrow
 
--- | Will find fixed point of a function from fiven starting point based on 'Eq' instance.
+-- | Will iterativelly find fixed point of a function (starting from given point) based on 'Eq' instance.
 --
 -- >>> fixEq cos 0
 -- 0.7390851332151607
@@ -15,12 +15,12 @@ fixEq f = fun where
     fun x = if x == x' then x else fun x' where
         x' = f x
 
--- | Use funtion to anotate value, left version.
+-- | Annotate value by given function, left version.
 --
--- > sort . anontatel read
-anotatel :: (a -> b) -> a -> (b, a)
-anotatel = (&&& id)
+-- > sort . annotatel read
+annotatel :: (a -> b) -> a -> (b, a)
+annotatel = (&&& id)
 
--- | Use funtion to anotate value, right version.
-anotater :: (a -> b) -> a -> (a, b)
-anotater = (id &&&)
+-- | Annotate value by given function, right version.
+annotater :: (a -> b) -> a -> (a, b)
+annotater = (id &&&)
