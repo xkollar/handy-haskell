@@ -9,6 +9,8 @@ import Control.Monad.State
 
 warn = (\ x -> f $ g x) ==> f . g
 
+error "Do not use undefined" = undefined ==> _typed_hole where note = "typed holes were introduced with GHC 7.8.1"
+
 -- List
 warn = cycle [c] ==> repeat c
 
