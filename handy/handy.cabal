@@ -62,7 +62,7 @@ library
 Test-Suite handy-test
     type:       exitcode-stdio-1.0
     main-is:    HandyTest.hs
-    ghc-options: -Wall -Werror -fwarn-tabs
+    ghc-options: -Wall -Werror -fwarn-tabs -threaded
     hs-source-dirs: src, test
     build-depends: base ==4.5.*,
                    test-framework,
