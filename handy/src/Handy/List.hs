@@ -66,6 +66,11 @@ isMonotonousBy lt (x:s) = f x s where
 isMonotonous :: Ord a => [a] -> Bool
 isMonotonous = isMonotonousBy (<)
 
+-- | Break list by delimiters identified by predicate.
+-- Variation to @words@/@lines@. Works on infinite lists.
+--
+-- >>> head . head $ breakAll (const False) [1..]
+-- 1
 breakAll :: (a -> Bool) -> [a] -> [[a]]
 breakAll p = f where
     f = uncurry (:) . g where
