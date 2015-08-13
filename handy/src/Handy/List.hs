@@ -65,3 +65,10 @@ isMonotonousBy lt (x:s) = f x s where
 -- | Check monotonicity by default Ord instance.
 isMonotonous :: Ord a => [a] -> Bool
 isMonotonous = isMonotonousBy (<)
+
+breakAll :: (a -> Bool) -> [a] -> [[a]]
+breakAll p = f where
+    f = uncurry (:) . g where
+        g (x:s) = if p x then ([], f s) else (x:a, b) where
+            (a,b) = g s
+        g [] = ([], [])
