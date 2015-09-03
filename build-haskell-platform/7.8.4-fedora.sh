@@ -3,7 +3,11 @@
 
 set -eu
 
-declare -r GHC_URL='https://www.haskell.org/ghc/dist/7.8.4/ghc-7.8.4-i386-unknown-linux-deb7.tar.xz'
+if [ x"$( uname -i )" = x"x86_64" ]; then
+    declare -r GHC_URL='https://www.haskell.org/ghc/dist/7.8.4/ghc-7.8.4-x86_64-unknown-linux-deb7.tar.xz'
+else
+    declare -r GHC_URL='https://www.haskell.org/ghc/dist/7.8.4/ghc-7.8.4-i386-unknown-linux-deb7.tar.xz'
+fi
 declare -r GHC_ARCHIVE="$( basename "${GHC_URL}" )"
 declare -r GHC_BUILD_DIR=$( sed 's/\(ghc-[0-9.]*\)-.*/\1/' <<< "${GHC_ARCHIVE}" )
 declare -r GHC_VERSION_STRING='The Glorious Glasgow Haskell Compilation System, version 7.8.4'
@@ -20,7 +24,6 @@ declare -r -a REQUIRED_PACKAGES=(
     )
 
 function check_package() {
-    return
     rpm -q "${1}" || exit 1
 }
 
@@ -63,7 +66,7 @@ function main() {
     export HOME="${TMP_PREFIX}/home1"
     mkdir -p "${TMP_PREFIX}"
 
-    if ! [ x"$( ghc --version )" = x"${GHC_VERSION_STRING}" ]; then
+    if ! type ghc || ! [ x"$( ghc --version )" = x"${GHC_VERSION_STRING}" ]; then
         cd "${GHC_BUILD_DIR}"
         ./configure --prefix="${TMP_PREFIX}"
         make install
@@ -98,7 +101,7 @@ function main() {
     (
         cd haskell-platform
         ./platform.sh --prefix="/opt/" "../${GHC_ARCHIVE}"
-        # ./platform.sh "../${GHC_ARCHIVE}"
+        cp build/product/haskell-platform-*.tar.gz .
     )
     # rm -rf "${TMP_PREFIX}"
 }
