@@ -4,7 +4,7 @@
 -- The name of the package.
 name:                handy
 
--- The package version.  See the Haskell package versioning policy (PVP) 
+-- The package version.  See the Haskell package versioning policy (PVP)
 -- for standards guiding when and how versions should be incremented.
 -- http://www.haskell.org/haskellwiki/Package_versioning_policy
 -- PVP summary:      +-+------- breaking API changes
@@ -30,12 +30,12 @@ license-file:        LICENSE
 -- The package author(s).
 author:              Matej Kollar <208115@mail.muni.cz>
 
--- An email address to which users can send suggestions, bug reports, and 
+-- An email address to which users can send suggestions, bug reports, and
 -- patches.
 maintainer:          Matej Kollar <208115@mail.muni.cz>
 
 -- A copyright notice.
--- copyright:           
+-- copyright:
 
 category:            Various
 
@@ -50,15 +50,15 @@ library
   exposed-modules:     Handy.List,
                        Handy.Function,
                        Handy.Number
-  
+
   -- Modules included in this library but not exported.
-  -- other-modules:       
-  
+  -- other-modules:
+
   -- Other library packages from which modules are imported.
   build-depends:       base ==4.5.*
   ghc-options:         -Wall -Werror -fwarn-tabs
   hs-source-dirs:      src
-  
+
 Test-Suite handy-test
     type:       exitcode-stdio-1.0
     main-is:    HandyTest.hs
