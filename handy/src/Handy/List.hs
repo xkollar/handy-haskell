@@ -1,6 +1,8 @@
 -- | Functions for maniplulating lists.
 module Handy.List where
 
+import Control.Applicative ((<*>))
+
 -- | Greedily selects 'ordered' subsequence. Usefull for printing progress of optimization search,
 -- for example
 --
@@ -57,10 +59,7 @@ orderedSubsets s' = subs [] s' [] where
 
 -- | Checks monotonicity of list elements by given relation.
 isMonotonousBy :: (a -> a -> Bool) -> [a] -> Bool
-isMonotonousBy _ [] = True
-isMonotonousBy lt (x:s) = f x s where
-    f v (y:t) = v `lt` y && f y t
-    f _ [] = True
+isMonotonousBy lt = and . (zipWith lt <*> tail)
 
 -- | Check monotonicity by default Ord instance.
 isMonotonous :: Ord a => [a] -> Bool
