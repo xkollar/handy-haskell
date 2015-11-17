@@ -12,7 +12,7 @@ module Handy.Number
     -- * Encoding/Decoding
     , enc1, dec1
     , enc2, dec2
-    , encodeBase
+    , encodeBase, decodeBase
     , encodeBij, decodeBij
     ) where
 
@@ -134,6 +134,23 @@ encodeBase s = reverse . f where
     f 0 = []
     f n = s !! fromIntegral m : f d where
         (d,m) = divMod n l
+
+-- | Decode natural number in base @(length s)@, using symbols from @s@.
+-- Provided @s@ must be of length no less than 2. It is dual to 'encodeBase'.
+--
+-- >>> decodeBase ['0'..'9'] "101" :: Int
+-- 101
+-- >>> encodeBase "01" "101" :: Int
+-- 5
+--
+-- It is not a bijection due to \"leading zeros problem\".
+--
+-- prop> decodeBase s . encodeBase s = id
+decodeBase :: (Integral a, Eq b) => [b] -> [b] -> a
+decodeBase s = f . reverse where
+    l = fromIntegral $ length s
+    f = foldr (\ x y -> x + y * l) 0 . map pos where
+        pos = fromIntegral . length . flip takeWhile s . (/=)
 
 -- | Bijectively encode natural numbers into sequence.
 -- This is not standard math encoding, but is handy
