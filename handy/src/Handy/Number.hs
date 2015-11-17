@@ -120,9 +120,9 @@ dec2 n = (x,y) where
 -- | Encode natural number in base @(length s)@, using symbols from @s@.
 -- Provided @s@ must be of length no less than 2.
 --
--- >>> encode ['0'..'9'] 100
+-- >>> encodeBase ['0'..'9'] 100
 -- "100"
--- >>> encode "01" 5
+-- >>> encodeBase "01" 5
 -- "101"
 -- >>> encodeBase "0123456789abc" (6*9)
 -- "42"
@@ -144,7 +144,7 @@ encodeBase s = reverse . f where
 --
 -- Handy for generating examples:
 --
--- > map (encode "aA") [1..]
+-- > map (encodeBij "aA") [1..]
 encodeBij :: Integral a => [b] -> a -> [b]
 encodeBij s = reverse . f where
     l = fromIntegral $ length s
@@ -158,7 +158,7 @@ encodeBij s = reverse . f where
 --
 -- prop> encodeBij s . decodeBij s = id
 --
--- prop> decodeBij s . encodeBijj s = id
+-- prop> decodeBij s . encodeBij s = id
 decodeBij :: (Integral a, Eq b) => [b] -> [b] -> a
 decodeBij s = f . reverse where
     l = fromIntegral $ length s
