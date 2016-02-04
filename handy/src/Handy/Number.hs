@@ -14,6 +14,11 @@ module Handy.Number
     , enc2, dec2
     , encodeBase, decodeBase
     , encodeBij, decodeBij
+    -- * Convenience functions/values
+    , binBase
+    , octBase
+    , decBase
+    , hexBase
     ) where
 
 -- -- | Standard GCD
@@ -181,3 +186,15 @@ decodeBij s = f . reverse where
     l = fromIntegral $ length s
     f = foldr (\ x y -> x + y * l) 0 . map pos where
         pos = succ . fromIntegral . length . flip takeWhile s . (/=)
+
+binBase :: [Char]
+binBase = "01"
+
+octBase :: [Char]
+octBase = "01234567"
+
+decBase :: [Char]
+decBase = "0123456789"
+
+hexBase :: [Char]
+hexBase = "0123456789abcdef"
