@@ -1,10 +1,13 @@
 -- | Functions for maniplulating lists.
 module Handy.List where
 
+import Prelude (Bool (..), Ord (..), and, dropWhile, foldr, id, not, otherwise,
+    reverse, tail, uncurry, zipWith, (.))
+
 import Control.Applicative ((<*>))
 
--- | Greedily selects 'ordered' subsequence. Usefull for printing progress of optimization search,
--- for example
+-- | Greedily selects 'ordered' subsequence. Usefull for printing progress of
+-- optimization search, for example
 --
 -- > print . maximum $ possibleSolutions
 --
@@ -29,8 +32,9 @@ ordElem _ [] = False
 --
 -- This function is slower than 'Data.List.permutations', however if you
 -- need permurations to be sorted this is more suitable choice as
--- @sort (permutations s)@ not only runs longer than @orderedPermutations (sort s)@
--- but the latter one is lazy and more memorry efficient.
+-- @sort (permutations s)@ not only runs longer than
+-- @orderedPermutations (sort s)@ but the latter one is lazy and more memorry
+-- efficient.
 --
 -- prop> sort (permutations s) = orderedPermutations (sort s)
 orderedPermutations :: [a] -> [[a]]
@@ -50,7 +54,8 @@ orderedSubsets :: [a] -> [[a]]
 orderedSubsets s' = subs [] s' [] where
     subs :: [a] -> [a] -> [[a]] -> [[a]]
     subs a [] r = reverse a:r
-    subs a s r = reverse a : foldr (\ (x,t) g -> subs (x:a) t . g ) id (selections s) r
+    subs a s r = reverse a :
+        foldr (\ (x,t) g -> subs (x:a) t . g ) id (selections s) r
 
     selections :: [a] -> [(a, [a])]
     selections = f where
