@@ -1,4 +1,8 @@
--- | Functions for maniplulating lists.
+-- |
+-- Module:       $HEADER$
+-- Description:  Handy functions for manipulating functions.
+--
+-- Handy Functions for manipulating lists.
 module Handy.List where
 
 import Prelude (Bool (..), Ord (..), and, dropWhile, foldr, id, not, otherwise,

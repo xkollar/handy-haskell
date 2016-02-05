@@ -1,3 +1,8 @@
+-- |
+-- Module:       $HEADER$
+-- Description:  Handy functions for manipulating numbers.
+--
+-- Handy functions for manipulating numbers.
 module Handy.Number
     (
     -- * Modular arithmetic

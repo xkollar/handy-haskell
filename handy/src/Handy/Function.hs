@@ -1,3 +1,8 @@
+-- |
+-- Module:       $HEADER$
+-- Description:  Handy functions for manipulating functions.
+--
+-- Handy functions for manipulating functions.
 module Handy.Function
     ( fixEq
     , annotatel
@@ -6,7 +11,8 @@ module Handy.Function
 
 import Control.Arrow
 
--- | Will iterativelly find fixed point of a function (starting from given point) based on 'Eq' instance.
+-- | Will iteratively find fixed point of a function (starting from given
+-- point) based on 'Eq' instance.
 --
 -- >>> fixEq cos 0
 -- 0.7390851332151607
