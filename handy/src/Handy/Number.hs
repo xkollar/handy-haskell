@@ -26,6 +26,9 @@ module Handy.Number
     , hexBase
     ) where
 
+import Control.Arrow ((***))
+
+-- Available in Prelude...
 -- -- | Standard GCD
 -- gcd :: Integral a => a -> a -> a
 -- gcd a 0 = abs a
@@ -78,6 +81,53 @@ primes = 2:3: filter isPrime [5,7..] where
     isPrime n = f $ takeWhile (<=bound) primes where
         f = notElem 0 . map (mod n)
         bound = sqrtBig n
+
+-- Rho Algorithm from Wikipedia:
+-- The algorithm takes as its inputs @n@, the integer to be factored;
+-- and @g(x)@, a polynomial @p(x)@ computed modulo @n@.
+-- This will ensure that if @p|n@, and @x ≡ y mod p@, then @g(x) ≡ g(y) mod p@.
+-- In the original algorithm, @g(x) = (x2 - 1) mod n@, but nowadays it is more
+-- common to use @g(x) = (x2 + 1) mod n@. The output is either a non-trivial
+-- factor of @n@, or failure. It performs the following steps:[2]
+--
+-- > x ← 2; y ← 2; d ← 1;
+-- > While d = 1:
+-- >     x ← g(x)
+-- >     y ← g(g(y))
+-- >     d ← gcd(|x - y|, n)
+-- > If d = n, return failure.
+-- > Else, return d.
+--
+-- Note that *this algorithm may fail* to find a nontrivial factor even
+-- when @n@ is composite. In that case, you can try again, using a starting
+-- value other than 2 or a different @g(x)@. The name ρ algorithm comes from
+-- the fact that the values of @x (mod d)@ eventually repeat with period @d@,
+-- resulting in a ρ shape when you graph the values.
+rho :: Integer -> Maybe Integer
+rho n = f . head
+    . dropWhile (1==)
+    . map (gcd n . abs . uncurry (-))
+    . tail $ iterate (g *** g . g) (2,2)
+    where
+    g x = (x*x + 1) `mod` n
+    f x = if x == n then Nothing else Just x
+
+coprime :: Integer -> Integer -> Bool
+coprime m n = gcd m n == 1
+
+-- | Reasonably fast, but due to the fact that it uses rho function for
+-- numbers not divisible by first 1000 primes, resulting list may contain
+-- also composites @:-(@.
+factor :: Integer -> [Integer]
+factor = f (take 1000 primes) where
+    f _ 1 = []
+    f s@(p:ps) n = if m == 0 then p : f s d else f ps n where
+        (d,m) = n `divMod` p
+    f [] n = g n
+    g n = case rho n of
+        Nothing -> [n]
+        -- Just x -> g x ++ g (n `div` x)
+        Just x -> f (g x) n
 
 -- | List of Fibonacci numbers.
 fibs :: [Integer]
