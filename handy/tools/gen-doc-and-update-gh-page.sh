@@ -33,7 +33,7 @@ git ls-tree -r --name-only gh-pages -z \
 
 cp -r "${tmp}"/handy .
 
-read -p "Continue... 4"
+read -p "Continue (when pressed enter, changes will be made into the branch)..."
 
 git add -f handy
 git commit -v --amend
