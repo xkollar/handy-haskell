@@ -14,6 +14,8 @@ module Handy.Number
     , diagonal
     , fibs
     , primes
+    -- * Factorization
+    , factor
     -- * Encoding/Decoding
     , enc1, dec1
     , enc2, dec2
@@ -112,8 +114,8 @@ rho n = f . head
     g x = (x*x + 1) `mod` n
     f x = if x == n then Nothing else Just x
 
-coprime :: Integer -> Integer -> Bool
-coprime m n = gcd m n == 1
+-- coprime :: Integer -> Integer -> Bool
+-- coprime m n = gcd m n == 1
 
 -- | Reasonably fast, but due to the fact that it uses rho function for
 -- numbers not divisible by first 1000 primes, resulting list may contain
@@ -242,14 +244,22 @@ decodeBij s = f . reverse where
     f = foldr (\ x y -> x + y * l) 0 . map pos where
         pos = succ . fromIntegral . length . flip takeWhile s . (/=)
 
+-- | List of symbols for binary encoding.
+-- For use with 'encodeBase' and 'decodeBase'.
 binBase :: [Char]
 binBase = "01"
 
+-- | List of symbols for octal encoding.
+-- For use with 'encodeBase' and 'decodeBase'.
 octBase :: [Char]
 octBase = "01234567"
 
+-- | List of symbols for decimal encoding.
+-- For use with 'encodeBase' and 'decodeBase'.
 decBase :: [Char]
 decBase = "0123456789"
 
+-- | List of symbols for hexadecimal encoding.
+-- For use with 'encodeBase' and 'decodeBase'.
 hexBase :: [Char]
 hexBase = "0123456789abcdef"
