@@ -47,7 +47,8 @@ cabal-version:       >=1.8
 
 library
   -- Modules exported by the library.
-  exposed-modules:     Handy.List,
+  exposed-modules:     Handy,
+                       Handy.List,
                        Handy.Function,
                        Handy.Number
 
