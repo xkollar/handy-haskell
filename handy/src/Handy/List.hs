@@ -5,8 +5,8 @@
 -- Handy Functions for manipulating lists.
 module Handy.List where
 
-import Prelude (Bool (..), Ord (..), and, dropWhile, foldr, id, not, otherwise,
-    reverse, tail, uncurry, zipWith, (.))
+import Prelude (Bool (..), Ord (..), Ordering(..), and, dropWhile, foldr, id,
+    not, otherwise, reverse, tail, uncurry, zipWith, (.))
 
 import Control.Applicative ((<*>))
 
@@ -30,6 +30,13 @@ ordElem x (y:s)
     | x < y = False
     | otherwise = True
 ordElem _ [] = False
+
+ordIntersection :: Ord a => [a] -> [a] -> [a]
+ordIntersection xs@(x:s) yt@(y:t) = case compare x y of
+    LT -> ordIntersection s yt
+    EQ -> x : ordIntersection s t
+    GT -> ordIntersection xs t
+ordIntersection _ _ = []
 
 -- | Produces list of permutations.
 -- Preserves @monotonousBy lt s ==> monotonousBy lt (orderedPermutations s)@.
