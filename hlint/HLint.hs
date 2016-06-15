@@ -29,6 +29,9 @@ warn "Use null" = length x >= 1 ==> not (null x) where note = "increases lazines
 warn = fst (unzip x) ==> map fst x
 warn = snd (unzip x) ==> map snd x
 
+warn = or (fmap f s) ==> any f s
+warn = and (fmap f s) ==> all f s
+
 -- Map
 warn = map fst (Data.Map.toList x) ==> Data.Map.keys x
 warn = map snd (Data.Map.toList x) ==> Data.Map.elems x
