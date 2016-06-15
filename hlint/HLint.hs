@@ -7,6 +7,9 @@ import Control.Arrow
 import Control.Monad
 import Control.Monad.State
 
+warn = f . g $ x ==> f $ g x where
+    _ = not (isInfixApp x || isApp x || isDo x)
+    note = "unnecessary dot"
 warn = (\ x -> f $ g x) ==> f . g
 
 error "Do not use undefined" = undefined ==> _typed_hole where note = "typed holes were introduced with GHC 7.8.1"
