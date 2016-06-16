@@ -7,12 +7,20 @@ import Control.Arrow
 import Control.Monad
 import Control.Monad.State
 
+
 warn = f . g $ x ==> f $ g x where
-    _ = not (isInfixApp x || isApp x || isDo x)
+    -- https://github.com/ndmitchell/hlint/blob/master/src/HSE/Util.hs
+    -- _ = not (isInfixApp x || isApp x || isDo x || isLambda x)
+    _ = isAtom x
     note = "unnecessary dot"
 warn = (\ x -> f $ g x) ==> f . g
 
-error "Do not use undefined" = undefined ==> _typed_hole where note = "typed holes were introduced with GHC 7.8.1"
+-- I can't write good rule for this...
+-- warn = (\ x -> f (g x)) ==> f . g where
+--     _ = not (isSection f || isApp (f (g x)))
+
+error "Do not use undefined" = undefined ==> _typed_hole where
+    note = "typed holes were introduced with GHC 7.8.1"
 
 -- List
 warn = cycle [c] ==> repeat c
