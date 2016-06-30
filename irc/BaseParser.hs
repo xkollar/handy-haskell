@@ -1,5 +1,6 @@
 module BaseParser where
 
+import Control.Applicative hiding (many)
 import Control.Arrow
 import Control.Monad
 
@@ -7,6 +8,18 @@ newtype Parser a = Parser { runParser :: String -> [(a,String)] }
 
 instance Functor Parser where
     fmap f p = Parser $ \ s -> map (first f) (runParser p s)
+
+instance Applicative Parser where
+    pure x = Parser $ \ s -> [(x, s)]
+    p1 <*> p2 = Parser $ \ s ->
+        [ (f x, s2)
+        | (f, s1) <- runParser p1 s
+        , (x, s2) <- runParser p2 s1
+        ]
+
+instance Alternative Parser where
+    empty = Parser $ const []
+    p1 <|> p2 = Parser $ \ s -> runParser p1 s ++ runParser p2 s
 
 instance Monad Parser where
     return = ret
@@ -80,4 +93,4 @@ string' :: String -> Parser ()
 string' = foldr ((>>) . char) triv
 
 string :: String -> Parser String
-string s = fmap (const s) $ string' s
+string s = const s <$> string' s
