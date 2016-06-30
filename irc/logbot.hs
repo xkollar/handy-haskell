@@ -43,7 +43,14 @@ main :: IO ()
 main = do
     (server' : port' : nick' : channels') <- getArgs
     hSetBuffering stdin NoBuffering
-    connectLoop $ Config { server = server', port = read port', nick = nick', channels = channels', logLevel = Normal, reconnectTime = 60 }
+    connectLoop Config
+        { server = server'
+        , port = read port'
+        , nick = nick'
+        , channels = channels'
+        , logLevel = Normal
+        , reconnectTime = 60
+        }
 
 connectLoop :: Config -> IO ()
 connectLoop c = bracket (connect c) disconnect (runBot c) `catch` handler where
@@ -54,7 +61,7 @@ connectLoop c = bracket (connect c) disconnect (runBot c) `catch` handler where
             printf "Connection closed. Reconnecting in %d seconds\n" seconds
             threadDelay $ seconds * 1000000
             connectLoop c
-        | otherwise = printf "%s (terminating)\n" (show . ioeGetErrorType $ e)
+        | otherwise = printf "%s (terminating)\n" . show $ ioeGetErrorType e
 
 notify :: String -> IO a -> IO a
 notify s a = do
@@ -74,7 +81,7 @@ connect c = notify note $ do
     note = "Connecting to " ++ server c
 
 runBot :: Config -> Handle -> IO ()
-runBot c h = runReaderT run $ Bot { config = c, socket = h }
+runBot c h = runReaderT run Bot{ config = c, socket = h }
 
 run :: Net ()
 run = do
@@ -102,19 +109,19 @@ listen :: Handle -> Net ()
 listen h = forever $ do
     s <- init `fmap` io (hGetLine h)
     case parseMessage s of
-        Right (ServerMessage
+        Right ServerMessage
             { command = StringCommand "PING"
             , params = [x]
-            }) -> write Debug "PONG" x
-        Right (ServerMessage
+            } -> write Debug "PONG" x
+        Right ServerMessage
             { command = StringCommand "PRIVMSG"
             , params = [chan,m]
             , prefix = Just u
-            }) -> log From (takeWhile ('!'/=) u ++ "@" ++ chan ++ ": " ++ m)
-        Right (ServerMessage
+            } -> log From (takeWhile ('!'/=) u ++ "@" ++ chan ++ ": " ++ m)
+        Right ServerMessage
             { command = NumericCommand x
             , params = p
-            }) -> log From ("#" ++ x ++ ": " ++ last p)
+            } -> log From ("#" ++ x ++ ": " ++ last p)
         Right _ -> log From ("###Other: " ++ s)
         Left _ -> log From ("###Unparsable: " ++ s)
     -- log From s

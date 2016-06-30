@@ -24,8 +24,8 @@ prefixP = servernameP `mplus` (nicknameP >>++ rescue "" (rescue "" (char '!' >>:
 
 commandP :: Parser ServerCommand
 commandP = letterCommand `mplus` numericCommand where
-    letterCommand = fmap StringCommand $ many1 letter
-    numericCommand = fmap NumericCommand $ 3 `times` digit
+    letterCommand = StringCommand <$> many1 letter
+    numericCommand = NumericCommand <$> 3 `times` digit
 
 paramsP :: Parser [String]
 paramsP = variant1 `mplus` variant2 where
@@ -64,7 +64,7 @@ hostP = hostnameP `mplus` hostaddrP
 hostnameP :: Parser String
 hostnameP = do
     x <- shortnameP
-    fmap (concat . (x:)) $ many (char '.' >>: shortnameP)
+    concat . (x:) <$> many (char '.' >>: shortnameP)
 
 shortnameP :: Parser String
 -- Real world is sometimes more diverse :-/

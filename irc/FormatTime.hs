@@ -11,5 +11,5 @@ import Data.Time.Format (defaultTimeLocale)
 
 
 formatISO8601 :: UTCTime -> String
-formatISO8601 t = formatTime defaultTimeLocale "%FT%TZ" t
+formatISO8601 = formatTime defaultTimeLocale "%FT%TZ"
 
