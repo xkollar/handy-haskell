@@ -8,6 +8,8 @@ import Control.Monad
 import Control.Monad.State
 
 
+ignore "Use section"
+
 warn = f . g $ x ==> f $ g x where
     -- https://github.com/ndmitchell/hlint/blob/master/src/HSE/Util.hs
     -- _ = not (isInfixApp x || isApp x || isDo x || isLambda x)
