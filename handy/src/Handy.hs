@@ -4,11 +4,10 @@
 --
 -- Various handy functions. Maybe useful for scavinger hunts?
 module Handy
-    ( module Handy.Function
-    , module Handy.List
-    , module Handy.Number
+    ( module X
     ) where
 
-import Handy.Function
-import Handy.List
-import Handy.Number
+import Handy.Function as X
+import Handy.List as X
+import Handy.Number as X
+import Handy.Timed as X
