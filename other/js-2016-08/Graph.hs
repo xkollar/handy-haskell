@@ -32,7 +32,8 @@ fsp s e gr' = second reverse . M.findWithDefault (0,[]) e
         then g
         else f gr newGreen (orangeCandidate `M.difference` newGreen)
         where
-        sel@(v,(e,vs)) = minimumBy (compare `on` second length . snd) $ M.toList o
+        sel@(v,(e,vs)) = minimumBy (compare `on` second length . snd)
+            $ M.toList o
         newGreen = uncurry M.insert sel g
         orangeCandidate = M.unionWith h o
             $ M.mapWithKey
