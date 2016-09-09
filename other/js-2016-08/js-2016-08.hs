@@ -213,15 +213,17 @@ pointsAroundFromDir c a dsq d = map (translate c)
         sameQuadTest = if d == CounterClockWise
             then 0 <= det (0,0) a v
             else 0 >= det (0,0) a v
-    sameQuad (ax,ay) (bx,by) =
-        -- XXX
-        ax ~~ bx && ay ~~ by
-        -- positive ax == positive bx
-        -- && positive ay == positive by
-        where
-        positive x = x >= 0
-        (~~) = (==) `on` positive
     f = if d == CounterClockWise then id else map swap
+
+sameQuad :: Point -> Point -> Bool
+sameQuad (ax,ay) (bx,by) =
+    -- XXX
+    ax ~~ bx && ay ~~ by
+    -- positive ax == positive bx
+    -- && positive ay == positive by
+    where
+    positive x = x >= 0
+    (~~) = (==) `on` positive
 
 -- Test with
 -- (\ d dl c -> let trn (x,y) (dx,dy) = (x+dx,y+dy) :: (Int,Int); problem p v = pointsAroundFromDirBounded p $ trn p v in writeImage "/tmp/test.svg" $ translate (50,50) . scale 2 . overGraphic (grPoints $ problem c dl d) . withStroke Black 0.1 $ base) CounterClockWise (6,-4) (10,7)
@@ -291,7 +293,10 @@ sortByDistanceFrom p = sortBy (compare `on` distanceSq p)
 visiblePosts :: Point -> [Point]
 visiblePosts p = f [] $ sortByDistanceFrom p posts where
     f a [] = reverse a
-    f a (x:s) = if any (colinear p x) a then f a s else f (x:a) s
+    f a (x:s) = if any foo a then f a s else f (x:a) s
+        where
+        foo q = colinear p x q && sameQuad (vect p q) (vect p x)
+        vect (x1,y1) (x2,y2) = (x2-x1, y2-y1)
 
 -- swings :: Direction -> Point -> Point -> [Point]
 
