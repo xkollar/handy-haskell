@@ -455,11 +455,17 @@ from p ((via,e):s) = (p,via) : from e s
 -- > fromRational . sum . map ((1/) . (fromIntegral :: Int -> Rational) . uncurry distanceSq) $ from start officialSolution
 -- 0.708203883135747
 
--- main = do
---     print 42
---     -- print $ graph ! (10,8) ! (18,4)
---     G.writeImage "/tmp/test.svg"
---         . G.translate (50,50) . G.scale 2
---         -- . G.overGraphic (grPoints $ call swingsAroundFrom (17,12) (10,8))
---         . G.overGraphic (grPoints $ visiblePosts (10,8))
---         $ G.withStroke G.Black 0.1 base
+
+-- After fixing bug...
+--
+-- 1738557868 % 2454883275
+-- 0.7082
+-- (a4,c3)
+-- (k2,d6)
+-- (t7,d8)
+-- (e1,j6)
+-- (t7,j8)
+-- (q12,r4)
+-- (i8,r12)
+-- (l15,r18)
+-- (s19,t20)
