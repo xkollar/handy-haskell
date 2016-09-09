@@ -4,8 +4,11 @@ import Control.Arrow
 import Data.Function (on)
 import Data.List
 import Data.Maybe
+import Data.Monoid
 import Data.Tuple
 import Text.Printf
+
+import Data.Map ((!))
 
 import Handy
 import qualified SimpleGraphics as G
@@ -129,6 +132,11 @@ list2map = concat . zipWith (\ y -> zipWith (\ x -> (,) (x,y)) [1..]) [1..]
 showPoint :: Point -> String
 showPoint (x,y) = show' x ++ show y where
     show' n = take 1 $ drop n ('_':['a'..])
+
+newtype ShowablePoint = ShowablePoint Point
+
+instance Show ShowablePoint where
+    show (ShowablePoint p) = showPoint p
 
 -- Reverse, so it matches original assignment
 inputMap :: [(Point, Char)]
@@ -358,8 +366,8 @@ main = do
         second (magic (\ a b -> ((a,postForSwing a b),b)))
         $ fsp start end graph
     kukPrice = show
-    kukSwing ((_,p),e) = "(" ++ showPoint p ++ "," ++ showPoint e ++ ")"
-
+    -- kukSwing ((_,p),e) = "(" ++ showPoint p ++ "," ++ showPoint e ++ ")"
+    kukSwing ((_,p),e) = show (ShowablePoint p, ShowablePoint e)
 
 -- 0.7097
 -- (a4,c3)
@@ -392,3 +400,61 @@ diver x y = d : diver (m*10) y
 -- G.writeImage "/tmp/test.svg" $ G.translate (50,50) . G.scale 2
 -- . G.overGraphic (grPoints $ call swingsAroundFrom (13,1) start)
 -- . G.withStroke G.Black 0.1 $ base
+
+-- Official solution:
+--
+-- Very open-ended puzzle this month! The best solution we found to this
+-- month’s puzzle, along with 10 of you, had a cost of about 0.7082. There
+-- are actually a couple of ways to achieve that cost, but one is:
+--
+-- (a4,c3)
+-- (k2,d6)
+-- (t7,d8)
+-- (e1,j6)
+-- (t7,j8)
+-- (q12,r4)
+-- (i8,r12)
+-- (l15,r18)
+-- (s19,t20)
+--
+--  00000000011111111112222222
+--  12345678901234567890123456
+--  abcdefghijklmnopqrstuvwxyz
+officialSolution :: [(Point,Point)]
+officialSolution =
+    [ (( 1,  4), ( 3,  3)) -- ( a4,  c3) -- 1 % 9
+    , ((11,  2), ( 4,  6)) -- ( k2,  d6) -- 1 % 65
+    , ((20,  7), ( 4,  8)) -- ( t7,  d8) -- 1 % 257
+    , (( 5,  1), (10,  6)) -- ( e1,  j6) -- 1 % 50
+    , ((20,  7), (10,  8)) -- ( t7,  j8) -- 1 % 101
+    , ((17, 12), (18,  4)) -- (q12,  r4) -- 1 % 65
+    -- ^ I somehow missed this possibility? j8 -(q12)-> r4
+    , (( 9,  8), (18, 12)) -- ( i8, r12) -- 1 % 97
+    , ((12, 15), (18, 18)) -- (l15, r18) -- 1 % 45
+    , ((19, 19), (20, 20)) -- (s19, t20) -- 1 % 2
+    ]
+-- > mapM_ print . map (ShowablePoint *** ShowablePoint) $ officialSolution
+-- (a4,c3)
+-- (k2,d6)
+-- (t7,d8)
+-- (e1,j6)
+-- (t7,j8)
+-- (q12,r4)
+-- (i8,r12)
+-- (l15,r18)
+-- (s19,t20)
+
+from p [] = []
+from p ((via,e):s) = (p,via) : from e s
+
+-- > fromRational . sum . map ((1/) . (fromIntegral :: Int -> Rational) . uncurry distanceSq) $ from start officialSolution
+-- 0.708203883135747
+
+-- main = do
+--     print 42
+--     -- print $ graph ! (10,8) ! (18,4)
+--     G.writeImage "/tmp/test.svg"
+--         . G.translate (50,50) . G.scale 2
+--         -- . G.overGraphic (grPoints $ call swingsAroundFrom (17,12) (10,8))
+--         . G.overGraphic (grPoints $ visiblePosts (10,8))
+--         $ G.withStroke G.Black 0.1 base
