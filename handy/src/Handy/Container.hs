@@ -15,6 +15,7 @@ module Handy.Container
     , MinSet
     , Queue
     -- * Utility functions
+    , singleton
     , fromListL
     , fromListR
     , toList
@@ -87,6 +88,10 @@ instance Container Queue a where
             [] -> Nothing
     null (Queue [] []) = True
     null _ = False
+
+-- | Wraps element into container.
+singleton :: Container c a => a -> c a
+singleton x = insert x empty
 
 -- | Insert elements into empty data structure, one by one from left.
 fromListL :: Container c a => [a] -> c a
