@@ -7,7 +7,9 @@ module Handy
     ( module X
     ) where
 
+import Handy.Container as X
 import Handy.Function as X
+import Handy.Graph as X
 import Handy.List as X
 import Handy.Number as X
 import Handy.Timed as X

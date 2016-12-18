@@ -48,7 +48,9 @@ cabal-version:       >=1.8
 library
   -- Modules exported by the library.
   exposed-modules:        Handy
+                        , Handy.Container
                         , Handy.Function
+                        , Handy.Graph
                         , Handy.List
                         , Handy.Number
                         , Handy.Timed
@@ -57,7 +59,8 @@ library
   -- other-modules:
 
   -- Other library packages from which modules are imported.
-  build-depends:       base <5.0
+  build-depends:         base <5.0
+                       , containers
   ghc-options:         -Wall -Werror -fwarn-tabs
   hs-source-dirs:      src
 
