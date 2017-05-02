@@ -5,7 +5,6 @@ import "hint" HLint.Dollar
 import Data.Map
 import Control.Arrow
 import Control.Monad
-import Control.Monad.State
 
 
 ignore "Use section"
@@ -23,6 +22,9 @@ warn = (\ x -> f $ g x) ==> f . g
 
 error "Do not use undefined" = undefined ==> _typed_hole where
     note = "typed holes were introduced with GHC 7.8.1"
+
+-- warn = sequence (fmap f s) ==> mapM f s
+-- warn = sequence . fmap f ==> mapM f
 
 -- List
 warn = cycle [c] ==> repeat c
