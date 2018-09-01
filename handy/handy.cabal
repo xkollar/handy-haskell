@@ -68,8 +68,9 @@ Test-Suite handy-test
     type:       exitcode-stdio-1.0
     main-is:    HandyTest.hs
     ghc-options: -Wall -Werror -fwarn-tabs -threaded
-    hs-source-dirs: src, test
+    hs-source-dirs: test
     build-depends: base,
+                   handy,
                    test-framework,
                    test-framework-hunit,
                    test-framework-quickcheck2,
