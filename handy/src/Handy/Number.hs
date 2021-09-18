@@ -29,6 +29,7 @@ module Handy.Number
     ) where
 
 import Control.Arrow ((***))
+import Data.Maybe (fromJust)
 
 -- Available in Prelude...
 -- -- | Standard GCD
@@ -156,7 +157,7 @@ enc1 x y = (x + y)*(x + y + 1) `div` 2 + x
 --
 -- prop> uncurry enc1 . dec1 = id
 dec1 :: Integral a => a -> (a, a)
-dec1 0 = (0,0) where
+dec1 0 = (0,0)
 dec1 n = (c, a+d-c) where
     a = sqrtBig (n*2)
     b = n - enc1 0 a
@@ -211,8 +212,9 @@ encodeBase s = reverse . f where
 decodeBase :: (Integral a, Eq b) => [b] -> [b] -> a
 decodeBase s = f . reverse where
     l = fromIntegral $ length s
-    f = foldr (\ x y -> x + y * l) 0 . map pos where
-        pos = fromIntegral . length . flip takeWhile s . (/=)
+    t = zip s [0..]
+    pos = fromJust . flip lookup t
+    f = foldr (\ x y -> pos x + y * l) 0
 
 -- | Bijectively encode natural numbers into sequence.
 -- This is not standard math encoding, but is handy
@@ -241,8 +243,9 @@ encodeBij s = reverse . f where
 decodeBij :: (Integral a, Eq b) => [b] -> [b] -> a
 decodeBij s = f . reverse where
     l = fromIntegral $ length s
-    f = foldr (\ x y -> x + y * l) 0 . map pos where
-        pos = succ . fromIntegral . length . flip takeWhile s . (/=)
+    t = zip s [1..]
+    pos = fromJust . flip lookup t
+    f = foldr (\ x y -> pos x + y * l) 0
 
 -- | List of symbols for binary encoding.
 -- For use with 'encodeBase' and 'decodeBase'.

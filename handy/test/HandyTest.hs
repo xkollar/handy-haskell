@@ -51,22 +51,22 @@ holedFiniteList :: [Int]
 holedFiniteList = [100,102..200]
 
 test_ordElem_1 :: Bool
-test_ordElem_1 = 100 `ordElem` holedFiniteList where
+test_ordElem_1 = 100 `ordElem` holedFiniteList
 
 test_ordElem_2 :: Bool
-test_ordElem_2 = 150 `ordElem` holedFiniteList where
+test_ordElem_2 = 150 `ordElem` holedFiniteList
 
 test_ordElem_3 :: Bool
-test_ordElem_3 = 200 `ordElem` holedFiniteList where
+test_ordElem_3 = 200 `ordElem` holedFiniteList
 
 test_ordElem_4 :: Bool
-test_ordElem_4 = not $ 1 `ordElem` holedFiniteList where
+test_ordElem_4 = not $ 1 `ordElem` holedFiniteList
 
 test_ordElem_5 :: Bool
-test_ordElem_5 = not $ 151 `ordElem` holedFiniteList where
+test_ordElem_5 = not $ 151 `ordElem` holedFiniteList
 
 test_ordElem_6 :: Bool
-test_ordElem_6 = not $ 300 `ordElem` holedFiniteList where
+test_ordElem_6 = not $ 300 `ordElem` holedFiniteList
 
 holedInfiniteList :: [Integer]
 holedInfiniteList = [1,3..]

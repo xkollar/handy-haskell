@@ -30,7 +30,7 @@ grKata sing f u gr pt = go (Set.singleton pt) $ sing (pt, u) where
     go acc c = case get c of
         Just ((v,a),q) -> a : go acc' q' where
             nbrs = neighbours gr v
-            acc' = foldr Set.insert acc $ map fst nbrs
+            acc' = foldr (Set.insert . fst) acc nbrs
             q' = foldl' (flip insert) q . map (fst &&& f a) $ filter (flip Set.notMember acc . fst) nbrs
         Nothing -> []
 
